@@ -20,10 +20,12 @@ public class spellController : MonoBehaviour
     private Transform hitbox;
     [SerializeField]
     private Transform hitboxBack;
+    private List<TrailRenderer> trailRenderers;
 
     void Start()
     {
         spells = new List<spell>(GetComponentsInChildren<spell>());
+        trailRenderers = new List<TrailRenderer>(GetComponentsInChildren<TrailRenderer>());
         foreach (spell s in spells)
         {
             s.hitboxBack = hitboxBack;
@@ -70,6 +72,10 @@ public class spellController : MonoBehaviour
         {
             spell.getTargetHelp().GetComponent<spellHelper>().startHelp();
         }
+        foreach (var line in trailRenderers)
+        {
+            line.enabled = true;
+        }
     }
 
     private void finishSpell()
@@ -79,6 +85,10 @@ public class spellController : MonoBehaviour
         foreach (var spell in spells)
         {
             spell.getTargetHelp().GetComponent<spellHelper>().endHelp();
+        }
+        foreach (var line in trailRenderers)
+        {
+            line.enabled = false;
         }
     }
     public void Update()
