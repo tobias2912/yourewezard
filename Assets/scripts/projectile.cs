@@ -48,7 +48,7 @@ public abstract class projectile : MonoBehaviour
         if (elapsed >= directionChangeTimer)
         {
             elapsed = elapsed % directionChangeTimer;
-            directionChange();
+            // directionChange();
         }
     }
     private void directionChange()
@@ -59,18 +59,20 @@ public abstract class projectile : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
-        if (Vector3.Distance(startpoint, transform.position) > armingDistance)
+        if (Vector3.Distance(startpoint, transform.position) <= armingDistance)
         {
-            print(collision.gameObject.isStatic);
-            if (collision.gameObject.isStatic)
-            {
-                explode();
-            }
-            else if (collision.gameObject.tag == "enemy")
-            {
-                enemyController enemyController = collision.gameObject.GetComponent<enemyController>();
-                enemyController.handleProjectileCollision(this, collision);
-            }
+            return;
+        }
+        if (collision.gameObject.isStatic)
+        {
+            explode();
+            return;
+        }
+        else if (collision.gameObject.tag == "enemy")
+        {
+            enemyController enemyController = collision.gameObject.GetComponent<enemyController>();
+            if (enemyController == null) throw new Exception("enemy missing controller");
+            enemyController.handleProjectileCollision(this, collision);
         }
     }
 

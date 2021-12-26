@@ -12,13 +12,15 @@ public class enemyController : MonoBehaviour
     GameObject impactBodypart;
 
     public void ragdoll(){
-        animator.enabled = false;
         collidercomp.enabled = false;
+        animator.enabled = false;
     }
     private void knockback(Vector3 source){
         ragdoll();
         Rigidbody part = impactBodypart.GetComponent<Rigidbody>();
-        part.AddForce(source*10f, ForceMode.Impulse);
+        Vector3 dir = transform.position - source;
+        dir.Normalize();
+        part.AddForce(dir*6f, ForceMode.Impulse);
     }
 
 
